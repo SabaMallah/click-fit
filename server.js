@@ -6,7 +6,7 @@ const fs = require("fs");
 
 const app = express();
 const PORT = 3000;
-
+//STORING THE IMAGES IN UPLOAD IMAGES FOLDER////////////////
 app.use(express.static(path.join(__dirname, "public")));
 const uploadDir = path.join(__dirname, "upload_images");
 
@@ -27,3 +27,39 @@ app.post("/upload", upload.single("image"), (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+//CONNECTING TO SQL SERVER MANAGEMENT STUDIO//////////////////////////////////////
+const sql = require("mssql/msnodesqlv8");
+
+const config = {
+  connectionString:
+    "Driver={ODBC Driver 17 for SQL Server};Server=HP2020;Database=SabaDB;Trusted_Connection=Yes;",
+};
+
+async function testConnection() {
+  try {
+    const pool = await sql.connect(config);
+    console.log("Connected to SQL Server");
+    pool.close();
+  } catch (err) {
+    console.error("Connection error:", err);
+  }
+}
+///CALLING THE PROCEDURE TO ADD USER ////////////////////////////////
+async function addUser(email, password, type, active) {
+  try {
+    const pool = await sql.connect(config);
+    await pool
+      .request()
+      .input("email", sql.NVarChar, email)
+      .input("password", sql.NVarChar, password)
+      .input("type", sql.NVarChar, type)
+      .input("active", sql.TinyInt, active)
+      .execute("addUser");
+    console.log("User added.");
+  } catch (err) {
+    console.error(" Error adding user:", err);
+  }
+}
+
+addUser("test@example.com", "pass", "customer", 1);
