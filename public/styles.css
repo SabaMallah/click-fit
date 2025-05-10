@@ -214,3 +214,25 @@ btn-ghost:active {
   border-radius: 10px;
   background-color: #ccc9c9;
 }
+
+#uploadArea {
+  width: 80%;
+  margin: 20px auto;
+  padding: 40px;
+  border: 2px dashed #aaa;
+  text-align: center;
+  font-family: sans-serif;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+#uploadArea.dragover {
+  border-color: #333;
+  background-color: #eee;
+}
+
+#uploadStatus {
+  margin-top: 20px;
+  text-align: center;
+  font-family: monospace;
+}
